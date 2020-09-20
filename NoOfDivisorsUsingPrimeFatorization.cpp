@@ -35,6 +35,10 @@ int main() {
         int i=0;
         while(n>1 && v[i]<=n && i<v.size()){
                 int c=0;
+                if(prime[n]){
+                    count.push_back(1);
+                    n=1;
+                }
                 while(n%v[i]==0){
                     n=n/v[i];
                     c++;
