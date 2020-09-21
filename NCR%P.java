@@ -25,7 +25,7 @@ public static long pow(long k, long  p){
        long fac[] =new long[2001];
        long inv[] = new long[2001];
         fac[0]=1;
-        inv[0]=0;
+        inv[0]=1;
     for(int i=1;i<2001;i++) fac[i]=(fac[i-1]*i)%mod;
     for(int i=1;i<2001;i++) inv[i]=pow(fac[i],1000000005);
         StringBuffer sb = new StringBuffer();
