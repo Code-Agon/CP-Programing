@@ -22,12 +22,13 @@ public static long pow(long k, long  p){
 }
 
     public static void main(String[] args)throws IOException {
-       long fac[] =new long[2001];
-       long inv[] = new long[2001];
+       int num=1000001;
+       long fac[] =new long[num];
+       long inv[] = new long[num];
         fac[0]=1;
         inv[0]=1;
-    for(int i=1;i<2001;i++) fac[i]=(fac[i-1]*i)%mod;
-    for(int i=1;i<2001;i++) inv[i]=pow(fac[i],1000000005);
+    for(int i=1;i<num;i++) fac[i]=(fac[i-1]*i)%mod;
+    for(int i=1;i<num;i++) inv[i]=pow(fac[i],1000000005);
         StringBuffer sb = new StringBuffer();
        BufferedReader br =new BufferedReader(new InputStreamReader(System.in));
         int n1 = Integer.parseInt(br.readLine());
