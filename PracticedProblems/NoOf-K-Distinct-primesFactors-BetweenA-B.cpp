@@ -5,16 +5,17 @@ int main()
 {
    int arr[100001]={0};
   
-   for(int i=2;i<100001;i++){
+   for(int i=2;i<(int)100001/2;i++){
        if(arr[i]==0){
            for(int j=i;j<100001;j=j+i){
                arr[j]++;
            }
        }
    }
-   vector<int> v[10];
-  // for(int i=0;i<6;i++) v[i].push_back(-1);
+   vector<int> v[6];
    for(int i=2;i<100001;i++){
+       if(arr[i]==0) arr[i]++;
+       if(arr[i]<=5)
        v[arr[i]].push_back(i);
    }
     int t;
