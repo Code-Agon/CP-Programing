@@ -26,6 +26,8 @@ Sample input               Output
 3 abcababc                   0
 3 abcdefabc                  9
 
+Time complexity  : t*k*26*26
+
 **/
 
 
