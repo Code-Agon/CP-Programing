@@ -95,8 +95,6 @@ int main()
             arr[l-1]=r;
             updateSegTree(0,n-1,0,l-1,diff,seg);
          }
-        
-    
     }
    return 0;
 }
