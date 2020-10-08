@@ -1,4 +1,5 @@
 /**
+url: https://www.codechef.com/OCT20B/problems/REPLESX
 You are given an array of N integers A1,A2,…,AN and three more integers X,p, and k.
 
 An operation on the array is defined to be: replace the k-th smallest integer in the array with any integer you want.
