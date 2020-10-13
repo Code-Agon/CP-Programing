@@ -1,3 +1,12 @@
+/**
+input: 
+5 4
+4 6 8 1 4
+output:
+[4] [1,4],[4] but 4 already present so length is [4]=1 + [1,4]=2 ==3
+o/p: 3
+**/
+
 import java.io.*;
 import java.util.*;
 public class TestClass {
