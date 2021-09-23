@@ -151,3 +151,48 @@ class Solution
 	    return head;
     }
 
+	/*************** Function to remove duplicates from a unsorted linked list ******************/
+    static void removeDuplicate(node head)
+    {
+        // Hash to store seen values
+        HashSet<Integer> hs = new HashSet<>();
+     
+        /* Pick elements one by one */
+        node current = head;
+        node prev = null;
+        while (current != null)
+        {
+            int curval = current.val;
+             
+             // If current value is seen before
+            if (hs.contains(curval)) {
+                prev.next = current.next;
+            } else {
+                hs.add(curval);
+                prev = current;
+            }
+            current = current.next;
+        }
+ 
+    }
+
+
+ /********** Function to find the data of nth node from the end of a linked list.***********/
+    int getNthFromLast(Node head, int n)
+    {
+        int i=0;
+        Node cur = head;
+        while(head!=null){
+            i++;
+            head = head.next;
+        }
+        if(i<n) return -1;
+        else {
+            i = i-n;
+            while(i>0){
+                cur=cur.next;
+                i--;
+            }
+            return cur.data;
+        }
+    }
