@@ -53,3 +53,23 @@ Explanation: Cheapest is: start on cost[1], pay that cost, and go to the top.
         }
         return Math.min(dp[cost.length-1],dp[cost.length-2]);
     }
+	
+	
+	/***********************740. Delete and Earn*****************************/
+	You are given an integer array nums. You want to maximize the number of points you get by performing the following operation any number of times:
+	Pick any nums[i] and delete it to earn nums[i] points. Afterwards, you must delete every element equal to nums[i] - 1 and every element equal to nums[i] + 1.
+	Return the maximum number of points you can earn by applying the above operation some number of times.
+	
+	public int deleteAndEarn(int[] nums) {
+        int max=0 ;
+        for(int i=0;i<nums.length;i++){
+            max=Math.max(max,nums[i]);
+        }
+        int arr[] = new int[max+1];
+        for(int i=0;i<nums.length;i++) arr[nums[i]]+=nums[i];
+        
+        for(int k=2;k<=max;k++){
+            arr[k] = Math.max(arr[k]+arr[k-2],arr[k-1]);
+        }
+        return arr[max];
+    }

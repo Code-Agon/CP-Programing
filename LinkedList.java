@@ -134,22 +134,19 @@ class Solution
 
 
  /***************** Function to remove duplicates from sorted linked list.***********/
-    Node removeDuplicates(Node head)
-    {
-		
-	    Node curr = head;
-	    while(head!=null){
-	        Node ind = head;
-	        
-	        while(head!=null && head.data == ind.data){
-	            head = head.next;
-	        }
-	        
-	        ind.next = head;
-	    }
-	    head = curr;
-	    return head;
+     public ListNode deleteDuplicates(ListNode head) {
+        ListNode curr = head;
+        while(head!=null){
+            if(head.next!=null && head.val == head.next.val){
+                head.next = head.next.next;
+            }else{
+                head = head.next;
+            }
+        }
+        return curr;
+        
     }
+
 
 	/*************** Function to remove duplicates from a unsorted linked list ******************/
     static void removeDuplicate(node head)
