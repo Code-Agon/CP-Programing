@@ -1,5 +1,5 @@
 
-10,18,21,37,40,41,82
+10,18,21,37,41,82
 done with day 13
 
 56-completed
@@ -870,6 +870,56 @@ Return the maximum profit you can achieve from this transaction. If you cannot a
         }
         return a;
     }
+
+/**********************************Odd Even Linked List*****************************************/
+Given the head of a singly linked list, group all the nodes with odd indices together followed by the nodes with even indices, and return the reordered list.
+The first node is considered odd, and the second node is even, and so on.
+Note that the relative order inside both the even and odd groups should remain as it was in the input.
+You must solve the problem in O(1) extra space complexity and O(n) time complexity.
+Input: head = [1,2,3,4,5]
+Output: [1,3,5,2,4]
+public ListNode oddEvenList(ListNode head) {
+        if(head==null) return head;
+        ListNode odd = head;
+        ListNode eve = head.next;
+        ListNode s = odd,f=eve;
+        while(s.next!=null && f.next!=null){
+            s.next=f.next;
+            s=s.next;
+            f.next=s.next;
+            f=f.next;
+        }
+        s.next = eve;
+        return odd;
+    }
+	
+	
+	/***************************430. Flatten a Multilevel Doubly Linked List**********************************/
+	You are given a doubly linked list which in addition to the next and previous pointers, it could have a child pointer, which may or may not point to a separate doubly linked list. These child lists may have one or more children of their own, and so on, to produce a multilevel data structure, as shown in the example below.
+	Flatten the list so that all the nodes appear in a single-level, doubly linked list. You are given the head of the first level of the list
+	
+	class Solution {
+    public Node flatten(Node head) {
+        if(head==null) return null;
+        Node curr = head;
+        while(head!=null){
+            if(head.child!=null){
+                
+                Node temp = head.child;
+                while(temp.next!=null) temp=temp.next;
+                
+                temp.next = head.next;
+                if(head.next!=null)  head.next.prev = temp;
+                head.next = head.child;
+                head.child.prev = head;
+                head.child = null;
+                
+                
+            }else head=head.next;           
+        }
+        return curr;
+    }
+}
 	
 	
 	/**********************1. Two Sum*****************************/
@@ -992,6 +1042,39 @@ public class Main {
             
         }
         return cur;
+        
+    }
+	
+	/***************************92. Reverse Linked List II******************************/
+	Given the head of a singly linked list and two integers left and right where left <= right, reverse the nodes of the list from position left to position right, and return the reversed list.
+	class Solution {
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if(left==right) return head;
+        ListNode dummy = new ListNode();
+        dummy.next=head;
+        
+        ListNode first = dummy;
+        
+        ListNode curr = null;
+        for(int i=0;i<left;i++){
+            curr = first;
+            first = first.next;
+        }
+        
+        ListNode second = first;
+        ListNode prev = null,curr1 = null;
+        for(int i=left;i<=right;i++){
+            curr1 = first;
+            first = first.next;
+            curr1.next = prev;
+            prev = curr1;
+        }
+        
+        curr.next = curr1;
+        
+        second.next = first;
+
+        return dummy.next;        
         
     }
 	
@@ -1160,7 +1243,40 @@ public class Main {
         return false;
     }
 	
+	/**************************3sum************************/
+	Given an integer array nums, return all the triplets [nums[i], nums[j], nums[k]] such that i != j, i != k, and j != k, and nums[i] + nums[j] + nums[k] == 0.
+	Notice that the solution set must not contain duplicate triplets.
 	
+	class Solution {
+	public List<List<Integer>> threeSum(int[] nums) {
+
+		Arrays.sort(nums);
+		List<List<Integer>> list = new ArrayList<>();
+
+		for (int i = 0; i < nums.length - 2; i++) {
+			if (i == 0 || (i > 0 && nums[i] != nums[i - 1])) {
+				int low = i + 1, hig = nums.length - 1, sum = -nums[i];
+				while (low < hig) {
+					if (nums[low] + nums[hig] == sum) {
+						list.add(Arrays.asList(nums[i], nums[low], nums[hig]));
+						while (low < hig && nums[low] == nums[low + 1])
+							low++;
+						while (low < hig && nums[hig] == nums[hig] - 1)
+							hig--;
+						low++;
+						hig--;
+					} else {
+						if (nums[low] + nums[hig] > sum)
+							hig--;
+						else
+							low++;
+					}
+				}
+			}
+		}
+		return list;
+	}
+}
 	/***********************62. Unique Paths***********************/
 	The robot can only move either down or right at any point in time. The robot is trying to reach the bottom-right corner of the grid 
 	How many possible unique paths are there?
@@ -3538,6 +3654,31 @@ class Solution {
         return count;
     }
 }
+/*******************108. Convert Sorted Array to Binary Search Tree************************/
+Given an integer array nums where the elements are sorted in ascending order, convert it to a height-balanced binary search tree.
+
+A height-balanced binary tree is a binary tree in which the depth of the two subtrees of every node never differs by more than one.
+
+class Solution {
+    public TreeNode sortedArrayToBST(int[] nums) {
+        TreeNode root = null;
+       root =  getTreeNode(0,nums.length-1,nums);
+        return root;        
+    }
+    TreeNode getTreeNode (int low,int hig,int arr[]){
+        if(low>hig) return null;
+        if(low==hig){
+           TreeNode root = new TreeNode(arr[low]);
+            return root;
+        }
+        int mid = low+(hig-low)/2;
+        TreeNode root = new TreeNode(arr[mid]);
+        root.left = getTreeNode(low,mid-1,arr);
+        root.right = getTreeNode(mid+1,hig,arr);
+        return root;
+        
+    }
+}
 
 /******************************************Construct a Binary Tree from Preorder and Inorder Traversal***************************************************/
 
@@ -3986,6 +4127,49 @@ class Solution
         }
         
         return false; 
+    }
+}
+/*********************************130. Surrounded Regions**************************************/
+Given an m x n matrix board containing 'X' and 'O', capture all regions that are 4-directionally surrounded by 'X'.
+
+A region is captured by flipping all 'O's into 'X's in that surrounded region.
+
+class Solution {
+    void dfs(int i,int j,char[][] arr,int row,int col){
+        if(i>=row || i<0 || j>=col || j<0 || arr[i][j]=='X' || arr[i][j]=='O') return;
+        arr[i][j] = 'O';
+        dfs(i+1,j,arr,row,col);
+        dfs(i,j+1,arr,row,col);
+        dfs(i-1,j,arr,row,col);
+        dfs(i,j-1,arr,row,col);
+    }
+    public void solve(char[][] board) {
+        
+         int row = board.length;
+         int col = board[0].length;
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
+                if(board[i][j]!='X'){
+                    board[i][j] = '_';
+                }
+            }
+        }
+        for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
+                if(i==0 || j==0 || i==row-1 || j==col-1 ){
+                    if(board[i][j]=='_'){
+                        dfs(i,j,board,row,col);
+                    }
+                }
+            }
+        }
+         for(int i=0;i<row;i++){
+            for(int j=0;j<col;j++){
+                if(board[i][j]=='_'){
+                    board[i][j] ='X';
+                }
+            }
+        }
     }
 }
 
@@ -4442,7 +4626,7 @@ Note: An island is surrounded by water and is formed by connecting adjacent land
     }
 }
 
-/****************************************************************/
+/*******************************numDistinctIslands*********************************/
 class Solution {
     public int numDistinctIslands(int[][] grid) {
         if (grid == null || grid.length < 1 || grid[0].length < 1) return 0;
@@ -4474,10 +4658,87 @@ class Solution {
 
 
 
+/*****************************N-Queens**************************************/
+class Solution {
+    public List<List<String>> solveNQueens(int n) {
+        char[][] board = new char[n][n];
+        for(int i = 0; i < n; i++)
+            for(int j = 0; j < n; j++)
+                board[i][j] = '.';
+        List<List<String>> res = new ArrayList<List<String>>();
+        int leftRow[] = new int[n];
+        int upperDiagonal[] = new int[2*n-1]; 
+        int lowerDiagonal[] = new int[2*n-1]; 
+        solve(0, board, res, leftRow, lowerDiagonal, upperDiagonal);
+        return res;
+    }
+    
+    
+    
+    private void solve(int col, char[][] board, List<List<String>> res, int leftRow[], int lowerDiagonal[], int upperDiagonal[]) {
+        if(col == board.length) {
+            res.add(construct(board));
+            return;
+        }
+        
+        for(int row = 0; row < board.length; row++) {
+            if(leftRow[row] == 0 && lowerDiagonal[row+col] == 0 && upperDiagonal[board.length -1 + col - row] == 0) {
+                board[row][col] = 'Q';
+                leftRow[row] = 1;
+                lowerDiagonal[row+col] = 1;
+                upperDiagonal[board.length-1 + col - row] = 1;
+                solve(col+1, board, res, leftRow, lowerDiagonal, upperDiagonal );
+                board[row][col] = '.';
+                leftRow[row] = 0;
+                lowerDiagonal[row+col] = 0;
+                upperDiagonal[board.length - 1 + col - row] = 0;
+            }
+        }
+    }
+    
+    
+    private List<String> construct(char[][] board) {
+        List<String> res = new LinkedList<String>();
+        for(int i = 0; i < board.length; i++) {
+            String s = new String(board[i]);
+            res.add(s);
+        }
+        return res;
+    }
+}
 
 
-
-
+/*****************************************M-colouring*****************************************/
+Given an undirected graph and an integer M. The task is to determine if the graph can be colored with at most M colors such that no two adjacent vertices of the graph are colored with the same color. Here coloring of a graph means the assignment
+ of colors to all vertices. Print 1 if it is possible to colour vertices and 0 otherwise.
+class solve 
+{
+    private static boolean isSafe(int node, List<Integer>[] G, int[] color, int n, int col) {
+        for(int it: G[node]) {
+            if(color[it] == col) return false; 
+        }
+        return true; 
+    }
+    private static boolean solve(int node, List<Integer>[] G, int[] color, int n, int m) {
+        if(node == n) return true; 
+        
+        for(int i = 1;i<=m;i++) {
+            if(isSafe(node, G, color, n, i)) {
+                color[node] = i;
+                if(solve(node+1, G, color, n, m) == true) return true; 
+                color[node] = 0;
+            }
+        }
+        return false; 
+    }
+    public static boolean graphColoring(List<Integer>[] G, int[] color, int i, int m) 
+    {
+        int n = G.length; 
+        if(solve(0, G, color, n, m) == true) return true; 
+        return false; 
+        // Your code here
+    }
+}
 
 
 
@@ -4617,3 +4878,148 @@ class Solution {
         return null;
     }
 }
+
+/**************************ncr********************************/
+
+public class Solution {
+static long mod = 1000000007l;
+public static long pow(long k, long  p){
+    
+    long sum=1l;
+    while(p>0){
+        if(p%2==1){
+            sum=(sum*k)%mod;
+        }
+        k=(k*k)%mod;
+        p=p>>1;
+    }
+    return sum%mod;
+    
+    
+}
+
+    public static void main(String[] args)throws IOException {
+       long fac[] =new long[2001];
+       long inv[] = new long[2001];
+        fac[0]=1;
+        inv[0]=1;
+    for(int i=1;i<2001;i++) fac[i]=(fac[i-1]*i)%mod;
+    for(int i=1;i<2001;i++) inv[i]=pow(fac[i],1000000005l);
+        StringBuffer sb = new StringBuffer();
+       BufferedReader br =new BufferedReader(new InputStreamReader(System.in));
+        int n1 = Integer.parseInt(br.readLine());
+        for(int i=0;i<n1;i++){
+            String str[] = br.readLine().split(" ");
+            int n=Integer.parseInt(str[0]);
+            int r=Integer.parseInt(str[1]);
+             if( r>n) sb.append("0\n");
+         else{
+
+            long ans=fac[n]%mod;
+                ans=(ans*inv[r])%mod;
+                ans=(ans*inv[n-r])%mod;
+            
+            sb.append(ans+"\n");
+        }
+        }
+        System.out.println(sb.toString().trim());
+    }
+}
+
+/*******************min in the roated sorted arryay********************/
+ public int findMin(int[] nums) {
+         int lo = 0, hi = nums.length - 1;
+        
+        if (nums[lo] < nums[hi]) return nums[lo];
+        
+        while (lo < hi) {
+            int mid = lo + (hi - lo) / 2;
+            
+            if (nums[mid] > nums[hi]) {
+                lo = mid + 1;
+            } else if (nums[mid] < nums[hi]) {
+                hi = mid;
+            } else {
+                hi--;
+            }
+        }
+        
+        return nums[hi];
+    }
+	
+	
+	/********************************longest Dup Substring *****************************/
+	class Solution {
+    String str;
+    
+    public String longestDupSubstring(String s) {
+        this.str=s;
+        int maxLen = 0;
+        int initind = 0;
+        Tri head  = new Tri(0,0);
+        for(int i=1;i+maxLen<s.length();i++){
+           int len =  insert(head,i);
+            if(len>maxLen){
+                maxLen=len;
+                initind = i;
+            }
+        }
+        return str.substring(initind, initind + maxLen);
+    }
+    public boolean isLeaf(Tri head){
+        return head.next==null;
+    }
+    
+    public int getIndex(int i,int dep){
+        return str.charAt(i+dep)-'a';
+    }
+    public int insert(Tri head,int ind){
+        int dep = head.dep;
+        if(ind+dep == str.length()) return dep;
+        
+        if(isLeaf(head)){
+            head.next = new Tri[26];
+            head.next[getIndex(head.ind,head.dep)] = new Tri(head.ind,dep+1);
+        }
+        int c = getIndex(ind,head.dep);
+        Tri x = head.next[c];
+        if(x==null){
+             head.next[c] = new Tri(ind,dep+1);
+           
+            return dep;
+        }
+        
+        return insert(x,ind);
+        
+     }
+}
+class Tri{
+    Tri next[];
+    int ind;
+    int dep;
+    Tri(int ind,int dep){
+        this.ind = ind;
+        this.dep = dep;
+    }
+}
+
+/*********************multiply 2 larege numbers***********************/
+  public String multiply(String num1, String num2) {
+        int m = num1.length(), n = num2.length();
+    int[] pos = new int[m + n];
+   
+    for(int i = m - 1; i >= 0; i--) {
+        for(int j = n - 1; j >= 0; j--) {
+            int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0'); 
+            int p1 = i + j, p2 = i + j + 1;
+            int sum = mul + pos[p2];
+
+            pos[p1] += sum / 10;
+            pos[p2] = (sum) % 10;
+        }
+    }  
+    
+    StringBuilder sb = new StringBuilder();
+    for(int p : pos) if(!(sb.length() == 0 && p == 0)) sb.append(p);
+    return sb.length() == 0 ? "0" : sb.toString();
+    }
